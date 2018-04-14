@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<!-- web3 관련 스크립트-->
+<script type="text/javascript" src="./js/bignumber.min.js"></script>
+<script type="text/javascript" src="./dist/web3-light.js"></script>
+<script type="text/javascript" src="./js/web3.min.js"></script>
+<script type="text/javascript" src="./js/utf8.js"></script>
+<script type="text/javascript" src="./js/testabi.js"></script>
+<script type="text/javascript" src="./abi/userPrivateAbi.js"></script>
+<script type="text/javascript" src="./abi/userContainerAbi.js"></script>
+<script type="text/javascript" src="./abi/userMainAbi.js"></script>
+<script type="text/javascript" src="./js/fundcontract.js"></script>
+<script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
+<script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
+
+
+<script type="text/javascript">
+    // Container : 0xb0968e080c3e3758c37cbeb09b10e18ace212440
+    // Private   : 0xe41edc69dbf3b198a8f9a611bd477089c4bd80d5
+    // Main      : 0xf604df3b28d18922607f3f0627c39de107f6e20b
+    // Profile   : 
+
+    //Test Id
+    /*
+		A (0x731A765DFF550d11B7C880Af145066BC1bDD3127)
+		"kakao","AAAA",[],[]
+		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
+		
+		B (0xd353f05a865b02dedf008a6f5d8cea2d8f969c5c)
+		"Email","BBBB",[],[]
+		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111523_7.jpg","설현","프로그래머","SK플래닛",["AngulerJs","FrontEnd","React","BlockChain","이더리움"]
+    */
+
+
+
+    var Web3 = require('web3');
+    var web3 = new Web3();
+    web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/TvuMDSQ9QbgjPihMgjvZ'));
+
+    function init() {
+        
+        userContainer = web3.eth.contract(userContainerAbi).at("0xb0968e080c3e3758c37cbeb09b10e18ace212440");
+        var data = userContainer.getUserList.call();
+        console.log(data);
+
+
+        for(i=0;i<data.length;i++){
+            userBasicInfo = web3.eth.contract(userMainAbi).at("0xf604df3b28d18922607f3f0627c39de107f6e20b");
+            var userbasic = userBasicInfo.getBasicInfo(data[i]);
+            console.log(userbasic);
+        }
+    }
+    
+</script>
+
+
+
+
+<head>
+	<title>PickMe</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body class="is-loading">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Main -->
+		<section id="main">
+			<header>
+
+			</header>
+
+	</section>
+</div>
+
+
+
+</body>
+<script>
+	if ('addEventListener' in window) {
+		init();
+		window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
+		document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+	}
+</script>
+</html>
