@@ -10,6 +10,8 @@
 <script type="text/javascript" src="./js/testabi.js"></script>
 <script type="text/javascript" src="./abi/userPrivateAbi.js"></script>
 <script type="text/javascript" src="./abi/userContainerAbi.js"></script>
+<script type="text/javascript" src="./abi/companyContainerAbi.js"></script>
+<script type="text/javascript" src="./abi/companyMainAbi.js"></script>
 <script type="text/javascript" src="./abi/userMainAbi.js"></script>
 <script type="text/javascript" src="./js/fundcontract.js"></script>
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
@@ -34,13 +36,17 @@
     */
 
 
-
     var Web3 = require('web3');
     var web3 = new Web3();
     web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/TvuMDSQ9QbgjPihMgjvZ'));
 
-    function init() {
+
+
+    //사용자 메인 리스트에 보여줄 아이템
+    function initUser() {
         
+        var resList = new Array() ;
+
         userContainer = web3.eth.contract(userContainerAbi).at("0xb0968e080c3e3758c37cbeb09b10e18ace212440");
         var data = userContainer.getUserList.call();
         console.log(data);
@@ -49,10 +55,57 @@
         for(i=0;i<data.length;i++){
             userBasicInfo = web3.eth.contract(userMainAbi).at("0xf604df3b28d18922607f3f0627c39de107f6e20b");
             var userbasic = userBasicInfo.getBasicInfo(data[i]);
-            console.log(userbasic);
+
+            var item = new Object() ;
+            item.account = data[i] ;
+            item.items = userbasic;
+            resList.push(item);
         }
+        var jsonResult = JSON.stringify(resList);
+
+        return jsonResult;
     }
     
+
+    // Container : 0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833
+    // Detail    : 
+    // Main      : 0x9b022b7aa44580b1047e1a278a9abcc738ca12b0
+    // Profile   :
+    //Test Id
+    /*
+		CompanyA (0xcf1EcAC3Fa57d8844B6195cC21b7b5Ac6a0CB185)
+		0xcf1EcAC3Fa57d8844B6195cC21b7b5Ac6a0CB185,"https://www.pycon.kr/2017/media/sponsor/skplanet.png","SkPlanet","커머스/IT"
+		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
+		
+    */
+
+
+
+    //회사 메인 리스트에 보여줄 아이템
+    function getCompanyMainList(){
+
+    	var resList = new Array() ;
+
+    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
+    	var data = companyContainer.getCompanyList.call();
+
+    	for(i=0;i<data.length;i++){
+            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x9b022b7aa44580b1047e1a278a9abcc738ca12b0");
+            var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
+
+            var item = new Object() ;
+            item.account = data[i] ;
+            item.items = companyMainItem;
+
+            resList.push(item);
+        }
+
+        var jsonResult = JSON.stringify(resList);
+
+        return jsonResult;
+    }
+
+
 </script>
 
 
@@ -82,7 +135,7 @@
 </body>
 <script>
 	if ('addEventListener' in window) {
-		init();
+		initUser();
 		window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
 		document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
 	}
