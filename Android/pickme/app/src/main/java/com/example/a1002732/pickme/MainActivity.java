@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private String DIR_PATH = "/Android/data/com.example.a1002732.pickme/";
+    final String DIR_PATH = "/Android/data/com.example.a1002732.pickme/";
     final String FILE_NAME = "propertie.txt";
 
     @Override
