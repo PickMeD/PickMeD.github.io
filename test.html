@@ -15,6 +15,7 @@
 <script type="text/javascript" src="./abi/userMainAbi.js"></script>
 <script type="text/javascript" src="./abi/userFreeVisionAbi.js"></script>
 <script type="text/javascript" src="./abi/userProfileAbi.js"></script>
+<script type="text/javascript" src="./abi/userHideInfoAbi.js"></script>
 <script type="text/javascript" src="./js/fundcontract.js"></script>
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
@@ -26,13 +27,16 @@
     // Main      : 0xf604df3b28d18922607f3f0627c39de107f6e20b
     // Profile   : 0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c
     // FreeVisio : 0x24d6d4a0285b639d42529964c4322d98172beece
+    // HideInfo  : 0x773ae136f1e9047c545dfc290636c5e92837d151
     //Test Id
     /*
 		A (0x731A765DFF550d11B7C880Af145066BC1bDD3127)
 		"kakao","AAAA",[],[]
 		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
 		["숭일고 졸업","이화여자대학교 시각디자인과 학사 졸업","이화여자대학교 시각디자인 석사 졸업"],["삼성전자 디자인 멤버십 12.6~15.8","삼성전자 UX팀 15.8~"],["2016 서울시 장애인돕기 App공모전 동상","17년 TED (산업 디자인과 미래)"]
-		""
+		"저는 책을 읽고 그 책에서 배운 가치를 마음에 새기고 일상생활 속에서 그 가치를 실현하는 과정을 매우 중시합니다. 또한 정치가이자 발명가, 과학자였던 벤자민 프랭클린처럼 자신의 가능성을 능동적으로 계발하며 자신의 다재다능함의 영역을 꾸준히 확장시켰던 인물들에게 크게 공감합니다. 살아있음에 감사하는 마음을 잊지 않을 것, 배움의 기회를 찾아 바로 지금 출발할 것, 손해를 보더라도 원칙과 의리를 선택할 것, 연대와 소통의 동료애를 추구할 것 등은 해가 바뀌어도 변하지 않는 저의 신념이며, 그것이 저의 각오라는 것을 잊어버릴 만큼 현실 속에서 실현하고 싶습니다."
+		250, ["[석사 논문]산업디자인과 Product의 한계와 역할.pdf", "[특허증],갤럭시 S6 AlwaysDisplay.pdf", "[상장]2016 서울시 장애인돕기 App공모전 동상"]
+
 
 
 		B (0xd353f05a865b02dedf008a6f5d8cea2d8f969c5c)
@@ -74,14 +78,17 @@
 		var resList = new Array() ;
 		userProfileContract = web3.eth.contract(userProfileAbi).at("0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c");
         userFreeVisionContract = web3.eth.contract(userFreeVisionAbi).at("0x24d6d4a0285b639d42529964c4322d98172beece");
+		userHideInfoContract = web3.eth.contract(userHideInfoAbi).at("0x773ae136f1e9047c545dfc290636c5e92837d151");
+        
 		var item = new Object() ;
 
 
         var data = userProfileContract.getProfileInfo(_addr);
         var vision = userFreeVisionContract.getUserFreeVision(_addr);
-		
+		var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
 		item.profileInfo = data;
 		item.freeVision = vision;
+		item.hideInfo = hideInfo;
 		var jsonResult = JSON.stringify(item);
         return jsonResult;
     }
