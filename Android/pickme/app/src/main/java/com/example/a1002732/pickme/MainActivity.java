@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     FileUtil fileUtil = null;
 
 
-
     final String DIR_PATH = "/Android/data/com.example.a1002732.pickme/";
     final String FILE_NAME = "propertie.txt";
 
@@ -53,26 +52,36 @@ public class MainActivity extends AppCompatActivity {
         String procStatus = "";
         try {
             procStatus = metaJson.getString("procstatus");
+            Thread.sleep(500);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }catch (InterruptedException e) {
             e.printStackTrace();
         }
 
+
+
         Intent intent = null;
         switch (procStatus){
+
             case INIT_USER:
                 intent = new Intent(getApplicationContext(),CertificateActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+
+                finish();
                 break;
             case CERTED_JUST_USER:
                 intent = new Intent(getApplicationContext(),PasswordActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case PLAY_USER:
                 intent = new Intent(getApplicationContext(),PickMeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             default:
         }
