@@ -152,53 +152,130 @@ contract UserMainInfo is Admin{
 
 
 contract UserProfileInfo is Admin{
-    mapping (address => uint256) private token;
-    mapping (address => uint256) private hideInfoAddr;
-    mapping (address => uint256) private profileInfoAddr;
-    mapping (address => ProfileInfo) private profileInfo;
-    mapping (address => uint256) private initWriteTime;
-    mapping (address => bool) private initWriteYn;
+    mapping (address => address) private ownerAddr;
     
-    struct ProfileInfo{
-        string myProfilePictureUrl;
-        string job;
-        uint _mvp;
-        bool scouterYn;
-        string nowCompany;
-        string freeIntroduce;
-    }
+    mapping (address => bool) private initWrite;
+    mapping (address => bytes32[]) private educationHistory;
+    mapping (address => bytes32[]) private careerHistory;
+    mapping (address => bytes32[]) private achievements;
+    
+    
+    modifier CertAddress() {if(ownerAddr[msg.sender] != msg.sender) throw;_;}
 
+    
 
     function UserProfileInfo(){
         owner=msg.sender;
     }
-
-    function insertProfileInfo(
-        string _myProfilePictureUrl,
-        string _job,
-        bool _scouterYn,
-        string _nowCompany,
-        string _freeIntroduce){
-        
-        if(initWriteYn[msg.sender] ==false){
-            initWriteTime[msg.sender] = now;
-            initWriteYn[msg.sender] = true;
+    
+    function checkOwn(){
+        if(initWrite[msg.sender] == false){
+            ownerAddr[msg.sender] = msg.sender;
+            initWrite[msg.sender] = true;
         }
+    }
+    
+    function checkOwnAccount(address _addr) constant returns (address){
+        return ownerAddr[_addr];
+    }
+    
+    function insertProfileInfo(
+        bytes32[] _educationHistory,
+        bytes32[] _careerHistory,
+        bytes32[] _achievements) CertAddress{
         
-        profileInfo[msg.sender].myProfilePictureUrl =_myProfilePictureUrl;
-        profileInfo[msg.sender].job =_job;
-        profileInfo[msg.sender].scouterYn =_scouterYn;
-        profileInfo[msg.sender].nowCompany =_nowCompany;
-        profileInfo[msg.sender].freeIntroduce =_freeIntroduce;
+        educationHistory[msg.sender] = _educationHistory;
+        careerHistory[msg.sender] =_careerHistory;
+        achievements[msg.sender] =_achievements;
+
+    }
+    
+    function getProfileInfo(address _addr) constant returns (bytes32[],bytes32[],bytes32[]){
+        return (educationHistory[_addr], careerHistory[_addr], achievements[_addr]);
+    }
+}
+
+
+
+
+contract UserFreeVision is Admin{
+    mapping (address => address) private ownerAddr;
+    mapping (address => bool) private initWrite;
+    mapping (address => string) private freeVision;
+    
+    
+    modifier CertAddress() {if(ownerAddr[msg.sender] != msg.sender) throw;_;}
+
+    function UserFreeVision(){
+        owner=msg.sender;
+    }
+    function checkOwn(){
+        if(initWrite[msg.sender] == false){
+            ownerAddr[msg.sender] = msg.sender;
+            initWrite[msg.sender] = true;
+        }
+    }
+    function checkOwnAccount(address _addr) constant returns (address){
+        return ownerAddr[_addr];
+    }
+    
+    function insertUserFreeVision(
+        string _freeVision) CertAddress{
+        
+        freeVision[msg.sender] = _freeVision;
+    }
+    
+    function getUserFreeVision(address _addr) constant returns (string){
+        return freeVision[_addr];
+    }
+}
+
+
+
+
+contract UserHideInfo is Admin{
+    
+    mapping (address => address) private ownerAddr;
+    mapping (address => bool) private initWrite;
+    mapping (address => uint) private value;
+    mapping (address => int8) private estimateValue;
+    mapping (address => uint) private openCount;
+    mapping (address => bytes32[]) private hint;
+    
+    
+    modifier CertAddress() {if(ownerAddr[msg.sender] != msg.sender) throw;_;}
+    modifier ExceptMyAddress() {if(ownerAddr[msg.sender] == msg.sender) throw;_;}
+    
+    function UserHideInfo(){
+        owner=msg.sender;
+    }
+    function checkOwn(){
+        if(initWrite[msg.sender] == false){
+            ownerAddr[msg.sender] = msg.sender;
+            initWrite[msg.sender] = true;
+            openCount[msg.sender] = 0;
+        }
+    }
+    function checkOwnAccount(address _addr) constant returns (address) {
+        return ownerAddr[_addr];
+    }
+    
+    function insertUserHideInfo (uint _value, bytes32[] _hint) CertAddress{
+        
+        value[msg.sender] = _value;
+        hint[msg.sender] = _hint;
+    }
+    
+    function updateEstimateValue(address _addr, int8 updatePm) ExceptMyAddress{
+        estimateValue[_addr] +=updatePm;
+    }
+    
+    function openCountUpdata(address _addr) private ExceptMyAddress{
+        openCount[_addr] +=1;
     }
     
     
-    
-    function getProfileInfo(address _addr) constant returns (string ,
-        string ,
-        bool ,
-        string ,
-        string){
-        return (profileInfo[_addr].myProfilePictureUrl,profileInfo[_addr].job ,profileInfo[_addr].scouterYn ,profileInfo[_addr].nowCompany,profileInfo[_addr].freeIntroduce);
+    function getUserHideInfo(address _addr) constant returns (uint,int,uint,bytes32[]){
+        return (value[_addr],estimateValue[_addr], openCount[_addr],hint[_addr]);
     }
 }
