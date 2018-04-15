@@ -13,6 +13,7 @@
 <script type="text/javascript" src="./abi/companyContainerAbi.js"></script>
 <script type="text/javascript" src="./abi/companyMainAbi.js"></script>
 <script type="text/javascript" src="./abi/userMainAbi.js"></script>
+<script type="text/javascript" src="./abi/userProfileAbi.js"></script>
 <script type="text/javascript" src="./js/fundcontract.js"></script>
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
@@ -22,14 +23,17 @@
     // Container : 0xb0968e080c3e3758c37cbeb09b10e18ace212440
     // Private   : 0xe41edc69dbf3b198a8f9a611bd477089c4bd80d5
     // Main      : 0xf604df3b28d18922607f3f0627c39de107f6e20b
-    // Profile   : 
+    // Profile   : 0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c
 
     //Test Id
     /*
 		A (0x731A765DFF550d11B7C880Af145066BC1bDD3127)
 		"kakao","AAAA",[],[]
 		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
-		
+		["숭일고 졸업","이화여자대학교 시각디자인과 학사 졸업","이화여자대학교 시각디자인 석사 졸업"],["삼성전자 디자인 멤버십 12.6~15.8","삼성전자 UX팀 15.8~"],["2016 서울시 장애인돕기 App공모전 동상","17년 TED (산업 디자인과 미래)"]
+
+
+
 		B (0xd353f05a865b02dedf008a6f5d8cea2d8f969c5c)
 		"Email","BBBB",[],[]
 		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111523_7.jpg","설현","프로그래머","SK플래닛",["AngulerJs","FrontEnd","React","BlockChain","이더리움"]
@@ -49,8 +53,6 @@
 
         userContainer = web3.eth.contract(userContainerAbi).at("0xb0968e080c3e3758c37cbeb09b10e18ace212440");
         var data = userContainer.getUserList.call();
-        console.log(data);
-
 
         for(i=0;i<data.length;i++){
             userBasicInfo = web3.eth.contract(userMainAbi).at("0xf604df3b28d18922607f3f0627c39de107f6e20b");
@@ -66,6 +68,19 @@
         return jsonResult;
     }
     
+    //사용자 디테일 프로필 조회
+    function getDetailProfile (_addr){
+		var resList = new Array() ;
+		userprifileContract = web3.eth.contract(userProfileAbi).at("0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c");
+        var data = userprifileContract.getProfileInfo(_addr);
+
+        return data;
+    }
+
+
+
+
+
 
     // Container : 0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833
     // Detail    : 
