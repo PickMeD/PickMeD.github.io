@@ -16,6 +16,8 @@
 <script type="text/javascript" src="./abi/userFreeVisionAbi.js"></script>
 <script type="text/javascript" src="./abi/userProfileAbi.js"></script>
 <script type="text/javascript" src="./abi/userHideInfoAbi.js"></script>
+<script type="text/javascript" src="./abi/interestContainerAbi.js"></script>
+<script type="text/javascript" src="./abi/interestObjectAbi.js"></script>
 <script type="text/javascript" src="./js/fundcontract.js"></script>
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
@@ -95,9 +97,6 @@
 
 
 
-
-
-
     // Container : 0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833
     // Detail    : 
     // Main      : 0x9b022b7aa44580b1047e1a278a9abcc738ca12b0
@@ -136,6 +135,34 @@
         return jsonResult;
     }
 
+
+
+	/*
+		InterstContainer : 0xbf7cf53298ca1001812832c7e857bb2bef667be7
+		InterestObject : 0xa453583c479cc0c44371406dd579ad93e8161ee7
+	*/
+    function getInterestItems(){
+
+    	var resList = new Array() ;
+
+    	interestContainer = web3.eth.contract(interestContainerAbi).at("0xbf7cf53298ca1001812832c7e857bb2bef667be7");
+    	var data = interestContainer.getInterestItemList.call();
+		
+		for(i=0;i<data.length;i++){
+            resList.push(hexToString(data[i].toString()));
+        }
+
+        return resList;
+    }
+
+     //Byte로 저장된 글자들
+	function hexToString(hexx) {
+	    var hex = hexx.toString();//force conversion
+	    var str = '';
+	    for (var i = 0; (i < hex.length && hex.substr(i, 2) !== '00'); i += 2)
+	        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+	    return str;
+	}
 
 </script>
 
