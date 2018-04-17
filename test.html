@@ -61,7 +61,7 @@
         var resList = new Array() ;
 
         userContainer = web3.eth.contract(userContainerAbi).at(userContainerContractAddress);
-        var data = userContainer.getAddr(0*page, 0*page + 10);
+        var data = userContainer.getAddr(1*page - 1, (1*page - 1) + 10);
 
         for(i=0;i<data.length;i++){
             userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
