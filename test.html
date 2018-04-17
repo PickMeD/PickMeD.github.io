@@ -98,9 +98,22 @@
         var data = userProfileContract.getProfileInfo(_addr);
         var vision = userFreeVisionContract.getUserFreeVision(_addr);
 		var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
-		item.profileInfo = data;
+		
+		var profileInfoItem = new Object();
+		profileInfoItem.educationHistory = data[0];
+		profileInfoItem.careerHistory = data[1];
+		profileInfoItem.achievements = data[2];
+
+		var hideInfoItem = new Object();
+		hideInfoItem.hideInfoValue = hideInfo[0];
+		hideInfoItem.estimateValue = hideInfo[1];
+		hideInfoItem.openCount = hideInfo[2];
+		hideInfoItem.hideInfoHint = hideInfo[3];
+
+
+		item.profileInfo = profileInfoItem;
 		item.freeVision = vision;
-		item.hideInfo = hideInfo;
+		item.hideInfo = hideInfoItem;
 		var jsonResult = JSON.stringify(item);
         return jsonResult;
     }
@@ -119,7 +132,7 @@
 
         return resList;
     }
-    
+
      //Byte로 저장된 글자들
 	function hexToString(hexx) {
 	    var hex = hexx.toString();//force conversion
@@ -243,7 +256,6 @@
 
         return jsonResult;
     }
-
 
 </script>
 
