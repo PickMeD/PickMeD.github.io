@@ -49,6 +49,11 @@
 	//PM Token 관련
 	pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
 
+	//회사 관련 
+	companyContainerContractAddress = "0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833";
+	companyMainContractAddress = "0x82e448165a2482e62f028baa67d076b8a50e3379";
+	companyDetailContractAddress = "0x200c91b0e868bbd305b17789beacf24cbd233270";
+	
 
     //사용자 메인 리스트에 보여줄 아이템
     function initUser() {
@@ -215,34 +220,11 @@
 
     	var resList = new Array() ;
 
-    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
+    	companyContainer = web3.eth.contract(companyContainerAbi).at(companyContainerContractAddress);
     	var data = companyContainer.getCompanyList.call();
 
     	for(i=0;i<data.length;i++){
-            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x0c7b3bb247553a0e2b86a75953ff109aed68ec63");
-            var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
-
-            var item = new Object() ;
-            item.account = data[i] ;
-            item.items = companyMainItem;
-
-            resList.push(item);
-        }
-
-        var jsonResult = JSON.stringify(resList);
-
-        return jsonResult;
-    }
-	//회사 메인 리스트에 보여줄 아이템
-    function getCompanyMainList2(){
-
-    	var resList = new Array() ;
-
-    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
-    	var data = companyContainer.getCompanyList.call();
-
-    	for(i=0;i<data.length;i++){
-            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x9b022b7aa44580b1047e1a278a9abcc738ca12b0");
+            companyMainInfo = web3.eth.contract(companyMainAbi).at(companyMainContractAddress);
             var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
 
             var item = new Object() ;
@@ -257,6 +239,52 @@
         return jsonResult;
     }
 
+    function getCompanyDetailInfo(_addr){
+
+		companyDetailContainer = web3.eth.contract(companyDetailAbi).at(companyDetailContractAddress);
+		var data = companyDetailContainer.getCompanyDetailInfo(_addr);
+		        	
+		var item = new Object() ;
+            item.employeeNum = data[0].toString();
+            item.openDate = data[1];
+            item.companyType = data[2];
+            item.homepage = data[3];
+            item.logoImg = data[4];
+            item.feedImg = data[5];
+        	
+        var recruits = new Array() ;
+        for(i = 0; i< data[6].length;i++){
+        	
+        	var aaa = data[6][i];
+        	
+        	recruitContract = web3.eth.contract(recruitAbi).at(aaa);
+        	
+        	var bottom = recruitContract.getRecruitInfoUp();
+            var up = recruitContract.getRecruitInfoUp();
+
+            var recruitItem = new Object() ;
+            recruitItem.title = up[0];
+            recruitItem.interestCate = up[1];
+            recruitItem.recruitType = up[2];
+            recruitItem.minEducational = up[3];
+            recruitItem.careerLimit = up[4];
+            recruitItem.preferentialTreatment = up[5];
+            recruitItem.workType = bottom[0];
+            recruitItem.paymentIndex = bottom[1];
+            recruitItem.posibleWorkLocation = bottom[2];
+            recruitItem.startTime = bottom[3];
+            recruitItem.endTime = bottom[4];
+            recruitItem.decription = bottom[5];
+
+            recruits.push(recruitItem);
+        }
+         
+		item.recruitList = recruits;
+
+		return item;
+
+		
+    }
 </script>
 
 
