@@ -20,42 +20,34 @@
 <script type="text/javascript" src="./abi/interestContainerAbi.js"></script>
 <script type="text/javascript" src="./abi/interestObjectAbi.js"></script>
 <script type="text/javascript" src="./abi/pmcTokenAbi.js"></script>
+<script type="text/javascript" src="./abi/recruitAbi.js"></script>
 <script type="text/javascript" src="./abi/userTransactionAbi.js"></script>
+<script type="text/javascript" src="./abi/companyDetailAbi.js"></script>
+
 <script type="text/javascript" src="./js/fundcontract.js"></script>
 <script src="https://rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 <script src="https://cdn.rawgit.com/ethereumjs/browser-builds/2fb69a714afe092b06645286f14b94f41e5c062c/dist/ethereumjs-tx.js"></script>
 
 
 <script type="text/javascript">
-    // Container : 0xb0968e080c3e3758c37cbeb09b10e18ace212440
-    // Private   : 0xe41edc69dbf3b198a8f9a611bd477089c4bd80d5
-    // Main      : 0xf604df3b28d18922607f3f0627c39de107f6e20b
-    // Profile   : 0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c
-    // FreeVisio : 0x24d6d4a0285b639d42529964c4322d98172beece
-    // HideInfo  : 0x773ae136f1e9047c545dfc290636c5e92837d151
-
-    // PMC TOKEN : 0xdc76436a668158c0e785613a740a4a5cc35b2e48
-    //Test Id
-    /*
-		A (0x731A765DFF550d11B7C880Af145066BC1bDD3127)
-		"kakao","AAAA",[],[]
-		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
-		["숭일고 졸업","이화여자대학교 시각디자인과 학사 졸업","이화여자대학교 시각디자인 석사 졸업"],["삼성전자 디자인 멤버십 12.6~15.8","삼성전자 UX팀 15.8~"],["2016 서울시 장애인돕기 App공모전 동상","17년 TED (산업 디자인과 미래)"]
-		"저는 책을 읽고 그 책에서 배운 가치를 마음에 새기고 일상생활 속에서 그 가치를 실현하는 과정을 매우 중시합니다. 또한 정치가이자 발명가, 과학자였던 벤자민 프랭클린처럼 자신의 가능성을 능동적으로 계발하며 자신의 다재다능함의 영역을 꾸준히 확장시켰던 인물들에게 크게 공감합니다. 살아있음에 감사하는 마음을 잊지 않을 것, 배움의 기회를 찾아 바로 지금 출발할 것, 손해를 보더라도 원칙과 의리를 선택할 것, 연대와 소통의 동료애를 추구할 것 등은 해가 바뀌어도 변하지 않는 저의 신념이며, 그것이 저의 각오라는 것을 잊어버릴 만큼 현실 속에서 실현하고 싶습니다."
-		250, ["[석사 논문]산업디자인과 Product의 한계와 역할.pdf", "[특허증],갤럭시 S6 AlwaysDisplay.pdf", "[상장]2016 서울시 장애인돕기 App공모전 동상"]
-
-
-
-		B (0xd353f05a865b02dedf008a6f5d8cea2d8f969c5c)
-		"Email","BBBB",[],[]
-		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111523_7.jpg","설현","프로그래머","SK플래닛",["AngulerJs","FrontEnd","React","BlockChain","이더리움"]
-    */
-
 
     var Web3 = require('web3');
     var web3 = new Web3();
     web3.setProvider(new web3.providers.HttpProvider('https://ropsten.infura.io/TvuMDSQ9QbgjPihMgjvZ'));
 
+
+    //사용자 관련
+    userContainerContractAddress = "0xb0968e080c3e3758c37cbeb09b10e18ace212440";
+	userBasicInfoContractAddress = "0xf604df3b28d18922607f3f0627c39de107f6e20b"
+	userProfileContractAddress = "0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c";
+	userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
+	userHideInfoContractAddress = "0x773ae136f1e9047c545dfc290636c5e92837d151";
+
+	//관심해시태그 관련
+	interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
+
+	//PM Token 관련
+	pmTokenContractAddress = "0xdc76436a668158c0e785613a740a4a5cc35b2e48";
 
 
     //사용자 메인 리스트에 보여줄 아이템
@@ -63,29 +55,42 @@
         
         var resList = new Array() ;
 
-        userContainer = web3.eth.contract(userContainerAbi).at("0xb0968e080c3e3758c37cbeb09b10e18ace212440");
+        userContainer = web3.eth.contract(userContainerAbi).at(userContainerContractAddress);
         var data = userContainer.getUserList.call();
 
         for(i=0;i<data.length;i++){
-            userBasicInfo = web3.eth.contract(userMainAbi).at("0xf604df3b28d18922607f3f0627c39de107f6e20b");
+            userBasicInfo = web3.eth.contract(userMainAbi).at(userBasicInfoContractAddress);
             var userbasic = userBasicInfo.getBasicInfo(data[i]);
 
-            var item = new Object() ;
-            item.account = data[i] ;
-            item.items = userbasic;
-            resList.push(item);
+            var item = new Object();
+            item.picture = userbasic[0];
+			item.name = userbasic[1];
+			item.job = userbasic[2];
+			item.company = userbasic[3];
+			item.interestItems = userbasic[4];
+			item.updateTime = userbasic[5];
+			item.mvp = userbasic[6];
+
+
+            var itemList = new Object() ;
+            itemList.account = data[i] ;
+            itemList.items = item;
+            resList.push(itemList);
         }
         var jsonResult = JSON.stringify(resList);
 
         return jsonResult;
     }
     
+
+
+
     //사용자 디테일 프로필 조회
     function getDetailProfile (_addr){
 		var resList = new Array() ;
-		userProfileContract = web3.eth.contract(userProfileAbi).at("0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c");
-        userFreeVisionContract = web3.eth.contract(userFreeVisionAbi).at("0x24d6d4a0285b639d42529964c4322d98172beece");
-		userHideInfoContract = web3.eth.contract(userHideInfoAbi).at("0x773ae136f1e9047c545dfc290636c5e92837d151");
+		userProfileContract = web3.eth.contract(userProfileAbi).at(userProfileContractAddress);
+        userFreeVisionContract = web3.eth.contract(userFreeVisionAbi).at(userFreevisionContractAddress);
+		userHideInfoContract = web3.eth.contract(userHideInfoAbi).at(userHideInfoContractAddress);
         
 		var item = new Object() ;
 
@@ -101,56 +106,11 @@
     }
 
 
-
-    // Container : 0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833
-    // Detail    : 
-    // Main      : 0x9b022b7aa44580b1047e1a278a9abcc738ca12b0
-    // Profile   :
-    //Test Id
-    /*
-		CompanyA (0xcf1EcAC3Fa57d8844B6195cC21b7b5Ac6a0CB185)
-		0xcf1EcAC3Fa57d8844B6195cC21b7b5Ac6a0CB185,"https://www.pycon.kr/2017/media/sponsor/skplanet.png","SkPlanet","커머스/IT"
-		"https://dispatch.cdnserbe.net/wp-content/uploads/2017/09/20170910111543_viewimagem-4.jpg","yoojung choi","Designer","판타지오",["PhotoShop","Illerstrator","여행","필라테스","노래"]
-		
-    */
-
-
-
-    //회사 메인 리스트에 보여줄 아이템
-    function getCompanyMainList(){
-
-    	var resList = new Array() ;
-
-    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
-    	var data = companyContainer.getCompanyList.call();
-
-    	for(i=0;i<data.length;i++){
-            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x9b022b7aa44580b1047e1a278a9abcc738ca12b0");
-            var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
-
-            var item = new Object() ;
-            item.account = data[i] ;
-            item.items = companyMainItem;
-
-            resList.push(item);
-        }
-
-        var jsonResult = JSON.stringify(resList);
-
-        return jsonResult;
-    }
-
-
-
-	/*
-		InterstContainer : 0xbf7cf53298ca1001812832c7e857bb2bef667be7
-		InterestObject : 0xa453583c479cc0c44371406dd579ad93e8161ee7
-	*/
     function getInterestItems(){
 
     	var resList = new Array() ;
 
-    	interestContainer = web3.eth.contract(interestContainerAbi).at("0xbf7cf53298ca1001812832c7e857bb2bef667be7");
+    	interestContainer = web3.eth.contract(interestContainerAbi).at(interestContainerContractAddress);
     	var data = interestContainer.getInterestItemList.call();
 		
 		for(i=0;i<data.length;i++){
@@ -159,7 +119,7 @@
 
         return resList;
     }
-
+    
      //Byte로 저장된 글자들
 	function hexToString(hexx) {
 	    var hex = hexx.toString();//force conversion
@@ -171,18 +131,16 @@
 
 
 	function getPMCBalance(addr){
-		pmcTokenContract = web3.eth.contract(pmcTokenAbi).at('0xdc76436a668158c0e785613a740a4a5cc35b2e48');
+		pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(pmTokenContractAddress);
 		balance = pmcTokenContract.balanceOf(addr).toNumber();
 		return balance;
 	}
 
 
 
-
-
 	//비공개 정보 보기위해 토큰 전달
 	function sendPmcForOpenHideInfo(gas, value, _to, _from, priKey){
-		contractAddress = '0xdc76436a668158c0e785613a740a4a5cc35b2e48';
+		contractAddress = pmTokenContractAddress;
 		pmcTokenContract = web3.eth.contract(pmcTokenAbi).at(contractAddress);
 		
 		var count = web3.eth.getTransactionCount(_from);
@@ -239,6 +197,29 @@
         return jsonResult;
 	}
 
+    //회사 메인 리스트에 보여줄 아이템
+    function getCompanyMainList(){
+
+    	var resList = new Array() ;
+
+    	companyContainer = web3.eth.contract(companyContainerAbi).at("0x3bb0cdbe30a886ca5b3f301249fdbbb9da20e833");
+    	var data = companyContainer.getCompanyList.call();
+
+    	for(i=0;i<data.length;i++){
+            companyMainInfo = web3.eth.contract(companyMainAbi).at("0x0c7b3bb247553a0e2b86a75953ff109aed68ec63");
+            var companyMainItem = companyMainInfo.getCompanyMainInfo(data[i]);
+
+            var item = new Object() ;
+            item.account = data[i] ;
+            item.items = companyMainItem;
+
+            resList.push(item);
+        }
+
+        var jsonResult = JSON.stringify(resList);
+
+        return jsonResult;
+    }
 	//회사 메인 리스트에 보여줄 아이템
     function getCompanyMainList2(){
 
@@ -262,6 +243,7 @@
 
         return jsonResult;
     }
+
 
 </script>
 

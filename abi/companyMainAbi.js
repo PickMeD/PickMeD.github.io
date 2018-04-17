@@ -17,12 +17,30 @@ companyMainAbi = [
 			{
 				"name": "_category",
 				"type": "string"
+			},
+			{
+				"name": "_value",
+				"type": "int256"
 			}
 		],
 		"name": "insertCompanyMainInfo",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -38,23 +56,6 @@ companyMainAbi = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "_addr",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "newAddr",
-				"type": "address"
-			}
-		],
-		"name": "TransferOwnership",
-		"type": "event"
 	},
 	{
 		"constant": true,
@@ -81,6 +82,10 @@ companyMainAbi = [
 			{
 				"name": "",
 				"type": "uint256"
+			},
+			{
+				"name": "",
+				"type": "int256"
 			}
 		],
 		"payable": false,
@@ -88,17 +93,20 @@ companyMainAbi = [
 		"type": "function"
 	},
 	{
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
+		"anonymous": false,
+		"inputs": [
 			{
-				"name": "",
+				"indexed": false,
+				"name": "_addr",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "newAddr",
 				"type": "address"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"name": "TransferOwnership",
+		"type": "event"
 	}
 ]
