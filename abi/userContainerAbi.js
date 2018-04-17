@@ -3,14 +3,74 @@ userContainerAbi = [
 		"constant": false,
 		"inputs": [
 			{
-				"name": "deleteUser",
+				"name": "_addr",
 				"type": "address"
 			}
 		],
-		"name": "deleteUser",
+		"name": "insertAdd",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "idx",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"name": "newAddr",
+				"type": "address"
+			}
+		],
+		"name": "LogSaceAddr",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "start",
+				"type": "uint256"
+			},
+			{
+				"name": "end",
+				"type": "uint256"
+			}
+		],
+		"name": "getAddr",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getIndex",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -26,56 +86,5 @@ userContainerAbi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getUserList",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newUser",
-				"type": "address"
-			}
-		],
-		"name": "insertUser",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "oldOwner",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "newOwenr",
-				"type": "address"
-			}
-		],
-		"name": "transferOwner",
-		"type": "event"
 	}
 ]
