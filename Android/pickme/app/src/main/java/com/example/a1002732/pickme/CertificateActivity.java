@@ -5,10 +5,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.kakao.auth.AuthType;
 import com.kakao.auth.ErrorCode;
 import com.kakao.auth.ISessionCallback;
+import com.kakao.auth.KakaoSDK;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
+import com.kakao.usermgmt.LoginButton;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.MeResponseCallback;
 import com.kakao.usermgmt.response.model.UserProfile;
@@ -20,25 +28,36 @@ import util.FileUtil;
  * Created by 1002732 on 2018. 4. 15..
  */
 
-public class CertificateActivity extends Activity {
+public class CertificateActivity extends Activity implements View.OnClickListener{
     final String DIR_PATH = "/Android/data/com.example.a1002732.pickme/";
     final String FILE_NAME = "propertie.txt";
 
     SessionCallback callback;
 
+    LoginButton kakaoRealButton;
 
+    Button button;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.certificate);
 
         callback = new SessionCallback();
         Session.getCurrentSession().addCallback(callback);
-
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
 
+            case R.id.kakaoAssignBtn:
+
+                break;
+            default:
+        }
+    }
 
     public void metainfoSave(String Type, String id){
         FileUtil fileUtil = new FileUtil();
@@ -84,6 +103,7 @@ public class CertificateActivity extends Activity {
                     //사용자 ID는 보안상의 문제로 제공하지 않고 일련번호는 제공합니다.
                     long number = userProfile.getId();
                     Log.d("이준환", "onSuccess: sdsds");
+                    Toast.makeText(getApplicationContext(),"",Toast.LENGTH_LONG).show();;
                 }
             });
 

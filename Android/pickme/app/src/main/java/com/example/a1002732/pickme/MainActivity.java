@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -44,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+
         fileUtil = new FileUtil();
         checkPermission();
 
@@ -52,43 +58,50 @@ public class MainActivity extends AppCompatActivity {
         String procStatus = "";
         try {
             procStatus = metaJson.getString("procstatus");
-            Thread.sleep(500);
         } catch (JSONException e) {
-            e.printStackTrace();
-        }catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-
-
-        Intent intent = null;
         switch (procStatus){
 
             case INIT_USER:
-                intent = new Intent(getApplicationContext(),CertificateActivity.class);
+
+                Intent intent  = new Intent(getApplicationContext(),CertificateActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
                 finish();
                 break;
             case CERTED_JUST_USER:
-                intent = new Intent(getApplicationContext(),PasswordActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intent2  = new Intent(getApplicationContext(),PasswordActivity.class);
+                intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent2);
                 finish();
                 break;
             case PLAY_USER:
-                intent = new Intent(getApplicationContext(),PickMeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                Intent intent3 = new Intent(getApplicationContext(),PickMeActivity.class);
+                intent3.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent3);
                 finish();
                 break;
             default:
         }
+    }
+    private void startLoading() {
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 2000);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
 
 
     }
-
 
     private JSONObject getMetaJson(){
 
@@ -126,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             //파일이 존재하지 않으면 초기 파일을 생성
             if(!file.exists()){
                 file.createNewFile();
-                String msg = "{\"type\":\"\",\"value\":\"\",\"privatekey\":\"\",\"account\":\"\",\"procstatus\":\"INIT\",\"index\":\"\"}";
+                String msg = "{\"type\":\"kakao\",\"value\":\"niipoong\",\"privatekey\":\"b22563a7e548bf55fb6b230ef1733cd16f9b9a900a68c3258a0e922547a621c3\",\"account\":\"0xCB3f76FAb25c223653a85513D2ca42BAB68D1B21\",\"procstatus\":\"PLAY\",\"index\":\"\"}";
                 boolean writeStatus = fileUtil.writeFile(file,msg);
 
                 if(!writeStatus) return false;
