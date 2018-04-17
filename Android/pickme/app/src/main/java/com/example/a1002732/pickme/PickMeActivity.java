@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -33,7 +36,8 @@ public class PickMeActivity extends Activity {
         webSettings.setAppCacheEnabled(false);
         webSettings.setDomStorageEnabled(true);
 
-        mWebView.loadUrl("http://htmlpreview.github.io/?https://github.com/securekim/pickme/blob/master/main/main.html");
+        mWebView.loadUrl("http://securekim.com/");
+
 
     }
 }
