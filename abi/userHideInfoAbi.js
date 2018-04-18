@@ -16,8 +16,24 @@ userHideInfoAbi = [
 				"type": "uint256"
 			},
 			{
-				"name": "_hint",
-				"type": "bytes32[]"
+				"name": "_hint0",
+				"type": "string"
+			},
+			{
+				"name": "_hint1",
+				"type": "string"
+			},
+			{
+				"name": "_hint2",
+				"type": "string"
+			},
+			{
+				"name": "_hint3",
+				"type": "string"
+			},
+			{
+				"name": "_hint4",
+				"type": "string"
 			}
 		],
 		"name": "insertUserHideInfo",
@@ -121,10 +137,41 @@ userHideInfoAbi = [
 			{
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_addr",
+				"type": "address"
+			}
+		],
+		"name": "getUserHideInfoHint",
+		"outputs": [
+			{
+				"name": "",
+				"type": "string"
 			},
 			{
 				"name": "",
-				"type": "bytes32[]"
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
+			},
+			{
+				"name": "",
+				"type": "string"
 			}
 		],
 		"payable": false,

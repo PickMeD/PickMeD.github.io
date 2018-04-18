@@ -8,7 +8,7 @@
 <script type="text/javascript" src="./dist/web3-light.js"></script>
 <script type="text/javascript" src="./js/web3.min.js"></script>
 <script type="text/javascript" src="./js/utf8.js"></script>
-<script type="text/javascript" src="./js/testabi.js"></script>
+<script type="text/javascript" src="./abi/testabi.js"></script>
 <script type="text/javascript" src="./abi/userPrivateAbi.js"></script>
 <script type="text/javascript" src="./abi/userContainerAbi.js"></script>
 <script type="text/javascript" src="./abi/companyContainerAbi.js"></script>
@@ -38,10 +38,10 @@
 
     //사용자 관련
     userContainerContractAddress = "0xbaf2f72c3c970a1379a2d1f9b5e45bc26e05694e";
-	userBasicInfoContractAddress = "0xf604df3b28d18922607f3f0627c39de107f6e20b"
-	userProfileContractAddress = "0xd81b8ee46f06ccce3ac700d3e277f0bdede6f19c";
+	userBasicInfoContractAddress = "0x82a1a1db6990e33a0039566f64985468a32a0a98"
+	userProfileContractAddress = "0x663216c1c8f109995dba6501f8e7ff066d5b679b";
 	userFreevisionContractAddress = "0x24d6d4a0285b639d42529964c4322d98172beece";
-	userHideInfoContractAddress = "0x773ae136f1e9047c545dfc290636c5e92837d151";
+	userHideInfoContractAddress = "0x91fadc97787c5102138c6765c8905f42951c225d";
 
 	//관심해시태그 관련
 	interestContainerContractAddress = "0xbf7cf53298ca1001812832c7e857bb2bef667be7";
@@ -98,22 +98,19 @@
 		userHideInfoContract = web3.eth.contract(userHideInfoAbi).at(userHideInfoContractAddress);
         
 		var item = new Object() ;
-
-
-        var data = userProfileContract.getProfileInfo(_addr);
         var vision = userFreeVisionContract.getUserFreeVision(_addr);
 		var hideInfo = userHideInfoContract.getUserHideInfo(_addr);
 		
 		var profileInfoItem = new Object();
-		profileInfoItem.educationHistory = data[0];
-		profileInfoItem.careerHistory = data[1];
-		profileInfoItem.achievements = data[2];
+		profileInfoItem.educationHistory = userProfileContract.getEducationHistoryInfo(_addr);
+		profileInfoItem.careerHistory = userProfileContract.getCareerHistoryInfo(_addr);
+		profileInfoItem.achievements = userProfileContract.getAchievementHistoryInfo(_addr);
 
 		var hideInfoItem = new Object();
 		hideInfoItem.hideInfoValue = hideInfo[0];
 		hideInfoItem.estimateValue = hideInfo[1];
 		hideInfoItem.openCount = hideInfo[2];
-		hideInfoItem.hideInfoHint = hideInfo[3];
+		hideInfoItem.hideInfoHint = userHideInfoContract.getUserHideInfoHint(_addr);
 
 
 		item.profileInfo = profileInfoItem;
@@ -314,7 +311,7 @@
 </body>
 <script>
 	if ('addEventListener' in window) {
-		initUser(1);
+		//initUser(1);
 		window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
 		document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
 	}
