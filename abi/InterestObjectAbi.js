@@ -1,85 +1,12 @@
 interestObjectAbi = [
 	{
-		"constant": false,
-		"inputs": [],
-		"name": "checkOwn",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "_educationHistory",
-				"type": "bytes32[]"
-			},
-			{
-				"name": "_careerHistory",
-				"type": "bytes32[]"
-			},
-			{
-				"name": "_achievements",
-				"type": "bytes32[]"
-			}
-		],
-		"name": "insertProfileInfo",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newOwenr",
-				"type": "address"
-			}
-		],
-		"name": "transferOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"name": "_addr",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "newAddr",
-				"type": "address"
-			}
-		],
-		"name": "TransferOwnership",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
 		"constant": true,
-		"inputs": [
-			{
-				"name": "_addr",
-				"type": "address"
-			}
-		],
-		"name": "checkOwnAccount",
+		"inputs": [],
+		"name": "getName",
 		"outputs": [
 			{
 				"name": "",
-				"type": "address"
+				"type": "string"
 			}
 		],
 		"payable": false,
@@ -87,30 +14,25 @@ interestObjectAbi = [
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			},
 			{
 				"name": "_addr",
 				"type": "address"
-			}
-		],
-		"name": "getProfileInfo",
-		"outputs": [
-			{
-				"name": "",
-				"type": "bytes32[]"
 			},
 			{
-				"name": "",
-				"type": "bytes32[]"
-			},
-			{
-				"name": "",
-				"type": "bytes32[]"
+				"name": "dir",
+				"type": "uint256"
 			}
 		],
+		"name": "insertInterestObject",
+		"outputs": [],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -126,5 +48,16 @@ interestObjectAbi = [
 		"payable": false,
 		"stateMutability": "view",
 		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_name",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	}
 ]
